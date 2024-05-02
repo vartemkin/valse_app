@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity() {
 
         val webSettings: WebSettings = webView.getSettings()
         webSettings.javaScriptEnabled = true
-        webSettings.builtInZoomControls = true
+        webSettings.domStorageEnabled = true
 
-        webView.loadUrl("https://google.ru/")
+        webView.loadUrl("https://web.valse.me/")
     }
 }
