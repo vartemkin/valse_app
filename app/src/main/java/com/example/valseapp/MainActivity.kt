@@ -72,12 +72,11 @@ class MainActivity : AppCompatActivity() {
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
-        webView.loadUrl("https://valse.me/test.html")
+        webView.loadUrl("https://web.valse.me/")
 
-        webView.evaluateJavascript("window.alert(1);", null);
-
-        ololo.con = this@MainActivity;
-        webView.addJavascriptInterface(ololo, "NativeAndroid");
+        //webView.evaluateJavascript("window.alert(1);", null);
+        //ololo.con = this@MainActivity;
+        //webView.addJavascriptInterface(ololo, "NativeAndroid");
     }
 
 //    override fun onBackPressed() {
@@ -89,6 +88,7 @@ class MainActivity : AppCompatActivity() {
 //        return
 //    }
 override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+    val webView = binding.webView;
     // Check whether the key event is the Back button and if there's history.
     if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
         webView.goBack()
