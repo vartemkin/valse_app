@@ -11,7 +11,6 @@ import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.valseapp.databinding.ActivityMainBinding
 
@@ -20,9 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    
-
-    private var ololo = WebAppInterface(this@MainActivity);
+    private var bridge = WebViewBridge(this@MainActivity);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val webView = binding.webView
+        val webView = binding.webView;
 
 
         webView.webViewClient = object : WebViewClient() {
@@ -72,31 +69,35 @@ class MainActivity : AppCompatActivity() {
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
-        webView.loadUrl("https://web.valse.me/")
-
-        //webView.evaluateJavascript("window.alert(1);", null);
-        //ololo.con = this@MainActivity;
-        //webView.addJavascriptInterface(ololo, "NativeAndroid");
+        webView.loadUrl("https://web.valse.me/str-utils");
+        webView.addJavascriptInterface(bridge, "NativeAndroid");
     }
 
-//    override fun onBackPressed() {
-//        val webView = binding.webView
-//        if (webView.canGoBack()) {
-//            super.onBackPressed()
-//        };
-//        Toast.makeText(this@MainActivity, "There is no back action", Toast.LENGTH_LONG).show()
-//        return
-//    }
-override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-    val webView = binding.webView;
-    // Check whether the key event is the Back button and if there's history.
-    if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-        webView.goBack()
-        return true
+    public fun execJsCode(code: String) {
+        val webView = binding.webView;
+        webView.post(Runnable {
+            webView.evaluateJavascript(code, null);
+        });
     }
-    // If it isn't the Back button or there isn't web page history, bubble up to
-    // the default system behavior. Probably exit the activity.
-    return super.onKeyDown(keyCode, event)
-}
+
+    //    override fun onBackPressed() {
+    //        val webView = binding.webView
+    //        if (webView.canGoBack()) {
+    //            super.onBackPressed()
+    //        };
+    //        Toast.makeText(this@MainActivity, "There is no back action", Toast.LENGTH_LONG).show()
+    //        return
+    //    }
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val webView = binding.webView;
+        // Check whether the key event is the Back button and if there's history.
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack()
+            return true
+        }
+        // If it isn't the Back button or there isn't web page history, bubble up to
+        // the default system behavior. Probably exit the activity.
+        return super.onKeyDown(keyCode, event)
+    }
 
 }
