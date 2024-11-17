@@ -13,22 +13,23 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.example.valseapp.databinding.ActivityMainBinding
+import com.example.valseapp.webview.JsExecutor
+import com.example.valseapp.webview.WebViewBridge
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.scopes.ActivityScoped
+import javax.inject.Inject
 
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), JsExecutor {
 
-class MainActivity : AppCompatActivity() {
-
+    @Inject lateinit var webViewBridge: WebViewBridge
     private lateinit var binding: ActivityMainBinding
-
-    private var bridge = WebViewBridge(this@MainActivity);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val webView = binding.webView;
-
+        val webView = binding.webView
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 //            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
 //                return filterNetworkRequests(view, request)
 //            }
-        };
+        }
 
         webView.webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
@@ -63,21 +64,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val webSettings: WebSettings = webView.getSettings()
-        webSettings.javaScriptEnabled = true
-        webSettings.domStorageEnabled = true
-        webSettings.cacheMode = WebSettings.LOAD_DEFAULT
-        webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-
-        webView.loadUrl("https://web.valse.me/str-utils");
-        webView.addJavascriptInterface(bridge, "NativeAndroid");
+        with(webView.settings) {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            cacheMode = WebSettings.LOAD_DEFAULT
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        }
+        webView.loadUrl("https://web.valse.me/str-utils")
+        webView.addJavascriptInterface(webViewBridge, "NativeAndroid")
     }
 
-    public fun execJsCode(code: String) {
-        val webView = binding.webView;
-        webView.post(Runnable {
-            webView.evaluateJavascript(code, null);
-        });
+    override fun execJsCode(code: String) {
+        val webView = binding.webView
+        webView.post {
+            webView.evaluateJavascript(code, null)
+        }
     }
 
     //    override fun onBackPressed() {
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     //        return
     //    }
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        val webView = binding.webView;
+        val webView = binding.webView
         // Check whether the key event is the Back button and if there's history.
         if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
             webView.goBack()
@@ -99,5 +100,4 @@ class MainActivity : AppCompatActivity() {
         // the default system behavior. Probably exit the activity.
         return super.onKeyDown(keyCode, event)
     }
-
 }
