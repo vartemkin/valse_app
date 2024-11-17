@@ -1,15 +1,20 @@
 [versions]
-agp = "8.3.1"
-kotlin = "1.9.0"
-coreKtx = "1.12.0"
+agp = "8.7.2"
+# не собирается на версии 2.0.20 и нескольких следующих версиях
+kotlin = "2.0.10"
+coreKtx = "1.15.0"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-appcompat = "1.6.1"
-material = "1.10.0"
-constraintlayout = "2.1.4"
-navigationFragmentKtx = "2.6.0"
-navigationUiKtx = "2.6.0"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+constraintlayout = "2.2.0"
+navigationFragmentKtx = "2.8.3"
+navigationUiKtx = "2.8.3"
+androidxMedia3 = '1.4.1'
+daggerHilt = "2.52"
+# не собирается на версии 2.0.20-1.0.25 и нескольких следующих версиях
+kotlinKsp = "2.0.10-1.0.24"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -21,8 +26,22 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "androidxMedia3" }
+androidx-media3-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "androidxMedia3" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "androidxMedia3" }
+androidx-media3-session = { group = "androidx.media3", name = "media3-session", version.ref = "androidxMedia3" }
+dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
+dagger-hilt-android-compiller = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "daggerHilt" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+daggerHiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+kotlinAndroidKsp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 
+[bundles]
+androidx_media3 = [
+    "androidx_media3_exoplayer",
+    "androidx_media3_exoplayer_dash",
+    "androidx_media3_ui","androidx-media3-session"
+]
