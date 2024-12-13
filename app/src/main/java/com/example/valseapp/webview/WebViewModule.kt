@@ -12,14 +12,14 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import com.example.valseapp.media.AudioPlayer
+import com.example.valseapp.media.MediaPlayer
 import org.json.JSONArray
 import org.json.JSONObject
 
 class WebViewModule(val context: Context, val webView: WebView) {
 
     val webViewBridge: WebViewBridge;
-    val audioPlayer = AudioPlayer(context);
+    val mediaPlayer = MediaPlayer(context);
 
     init {
         webView.webViewClient = object : WebViewClient() {
@@ -61,7 +61,7 @@ class WebViewModule(val context: Context, val webView: WebView) {
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
 
-        webView.loadUrl("https://valse.me/test2.html")
+        webView.loadUrl("https://valse.me/test3.html")
 
         webViewBridge = WebViewBridge(this);
         webView.addJavascriptInterface(webViewBridge, "vaBridge");
@@ -86,15 +86,14 @@ class WebViewModule(val context: Context, val webView: WebView) {
         try {
             val obj = JSONObject(json);
             val type = obj.getString("type");
-            val args = obj.getJSONArray("args");
-            val argv = Array(args.length()) {
-                args.getString(it)
-            }
             when (type) {
-                "toast" -> showToast(argv[0])
+                "toast" -> {
+                    val text = obj.getString("text");
+                    showToast(text)
+                }
             }
             Handler(context.mainLooper).post {
-                audioPlayer.processMessage(type, argv);
+                mediaPlayer.processMessage(type, obj);
             }
         } catch (e: Exception) {
             sendMessage("error", arrayOf(e.toString()))

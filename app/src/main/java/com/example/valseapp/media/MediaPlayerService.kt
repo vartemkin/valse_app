@@ -1,24 +1,22 @@
 package com.example.valseapp.media
 
-import android.content.ContentResolver
 import android.content.Intent
-import android.net.Uri
-import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.datasource.RawResourceDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
-import com.example.valseapp.R
 
-class PlayerService : MediaSessionService() {
-    private var mediaSession: MediaSession? = null
+class MediaPlayerService : MediaSessionService() {
 
-    // Create your player and media session in the onCreate lifecycle event
+    private var mediaSession: MediaSession? = null;
+
     override fun onCreate() {
         super.onCreate()
-        val player = ExoPlayer.Builder(this).build();
-        // player.add
+        val cacheDataSourceFactory = CacheDataSourceFactory(this, 2000 * 1024 * 1024, 100 * 1024 * 1024);
+        val player = ExoPlayer.Builder(this)
+            //.setMediaSourceFactory(DefaultMediaSourceFactory(this).setDataSourceFactory(cacheDataSourceFactory))
+            .build();
         mediaSession = MediaSession.Builder(this, player).build()
     }
 
@@ -27,7 +25,8 @@ class PlayerService : MediaSessionService() {
         val player = mediaSession?.player!!
         if (!player.playWhenReady
             || player.mediaItemCount == 0
-            || player.playbackState == Player.STATE_ENDED) {
+            || player.playbackState == Player.STATE_ENDED
+        ) {
             // Stop the service if not playing, continue playing in the background
             // otherwise.
             stopSelf()
@@ -44,5 +43,5 @@ class PlayerService : MediaSessionService() {
         super.onDestroy()
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo) = mediaSession
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = mediaSession
 }

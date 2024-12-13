@@ -1,19 +1,9 @@
 package com.example.valseapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
-import android.webkit.ConsoleMessage
-import android.webkit.PermissionRequest
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.example.valseapp.databinding.ActivityMainBinding
-import com.example.valseapp.webview.WebViewBridge
 import com.example.valseapp.webview.WebViewModule
 import dagger.hilt.android.AndroidEntryPoint
 
