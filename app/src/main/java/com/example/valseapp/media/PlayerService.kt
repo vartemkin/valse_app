@@ -17,7 +17,8 @@ class PlayerService : MediaSessionService() {
     // Create your player and media session in the onCreate lifecycle event
     override fun onCreate() {
         super.onCreate()
-        val player = ExoPlayer.Builder(this).build()
+        val player = ExoPlayer.Builder(this).build();
+        // player.add
         mediaSession = MediaSession.Builder(this, player).build()
     }
 
