@@ -61,7 +61,7 @@ class WebViewModule(val context: Context, val webView: WebView) {
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
 
-        webView.loadUrl("https://valse.me/test3.html")
+        webView.loadUrl("https://valse.me/")
 
         webViewBridge = WebViewBridge(this);
         webView.addJavascriptInterface(webViewBridge, "vaBridge");
