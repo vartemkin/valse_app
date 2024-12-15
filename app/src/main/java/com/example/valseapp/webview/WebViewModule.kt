@@ -66,19 +66,19 @@ class WebViewModule(val context: Context, val webView: WebView) {
         webViewBridge = WebViewBridge(this);
         webView.addJavascriptInterface(webViewBridge, "vaBridge");
 
+        mediaPlayer.getMediaPlayerListener().webViewModule = this; // соединяем для отправки сообщений
+
     }
 
     fun showToast(text: String) {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show()
     }
 
-    fun sendMessage(type: String, args: Array<String> = arrayOf()) {
-        val arr = JSONArray(args);
-        val obj = JSONObject();
+    fun sendMessage(type: String, obj: JSONObject) {
         obj.put("type", type);
-        obj.put("args", arr);
         webView.post {
-            webView.evaluateJavascript("window.vaAndroidToBrowser($obj);", null)
+            Log.d("@@@ $type", "$obj");
+            webView.evaluateJavascript("window.vaAndroidToBrowser('$obj');", null)
         }
     }
 
@@ -96,7 +96,9 @@ class WebViewModule(val context: Context, val webView: WebView) {
                 mediaPlayer.processMessage(type, obj);
             }
         } catch (e: Exception) {
-            sendMessage("error", arrayOf(e.toString()))
+            val obj = JSONObject();
+            obj.put("message", e.message)
+            sendMessage("WebViewModuleError", obj)
         }
     }
 }

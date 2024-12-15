@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.valseapp.databinding.ActivityMainBinding
 import com.example.valseapp.webview.WebViewModule
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -21,13 +22,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed();
-        webViewModule.sendMessage("back_pressed");
+        val obj = JSONObject();
+        webViewModule.sendMessage("BackPressed", obj);
+        return super.onBackPressed();
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            webViewModule.sendMessage("KEYCODE_BACK");
+            val obj = JSONObject();
+            webViewModule.sendMessage("KeyDownBack", obj);
         }
         return super.onKeyDown(keyCode, event)
     }
