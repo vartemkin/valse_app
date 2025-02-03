@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kotlinAndroidKsp)
-    alias(libs.plugins.daggerHiltAndroid)
+//    alias(libs.plugins.daggerHiltAndroid)
 }
 
 android {
@@ -49,8 +49,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.bundles.androidx.media3)
-    implementation(libs.dagger.hilt.android)
-    ksp(libs.dagger.hilt.android.compiller)
+//    implementation(libs.dagger.hilt.android)
+//    ksp(libs.dagger.hilt.android.compiller)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

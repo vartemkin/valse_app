@@ -1,7 +1,9 @@
 package com.example.valseapp.media
 
 import android.content.Intent
+import androidx.annotation.OptIn
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.session.MediaSession
@@ -11,11 +13,12 @@ class MediaPlayerService : MediaSessionService() {
 
     private var mediaSession: MediaSession? = null;
 
+    @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         val cacheDataSourceFactory = CacheDataSourceFactory(this, 2000 * 1024 * 1024, 100 * 1024 * 1024);
         val player = ExoPlayer.Builder(this)
-            //.setMediaSourceFactory(DefaultMediaSourceFactory(this).setDataSourceFactory(cacheDataSourceFactory))
+            .setMediaSourceFactory(DefaultMediaSourceFactory(this).setDataSourceFactory(cacheDataSourceFactory))
             .build();
         mediaSession = MediaSession.Builder(this, player).build()
     }

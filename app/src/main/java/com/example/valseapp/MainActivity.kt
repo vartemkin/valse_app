@@ -5,10 +5,8 @@ import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.example.valseapp.databinding.ActivityMainBinding
 import com.example.valseapp.webview.WebViewModule
-import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var webViewModule: WebViewModule;
